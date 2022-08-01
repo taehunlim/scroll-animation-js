@@ -9,8 +9,6 @@ const targetHeight = 7100;
 
 const def = {
     sl1: {
-        top: 500,
-        bottom: 1900,
         animation: [
             {
                 top: 500,
@@ -48,8 +46,6 @@ const def = {
         ],
     },
     scdown: {
-        top: 0,
-        bottom: 1000,
         animation: [
             {
                 top: 600,
@@ -65,8 +61,6 @@ const def = {
         ],
     },
     sl2: {
-        top: 1900,
-        bottom: 3200,
         animation: [
             {
                 top: 1900,
@@ -104,8 +98,6 @@ const def = {
         ],
     },
     sl3: {
-        top: 3300,
-        bottom: 4600,
         animation: [
             {
                 top: 3300,
@@ -143,8 +135,6 @@ const def = {
         ],
     },
     wave: {
-        top: 4500,
-        bottom: 5900,
         animation: [
             {
                 top: 4500,
@@ -176,8 +166,6 @@ const def = {
 
     },
     sl4: {
-        top: 4700,
-        bottom: 6000,
         animation: [
             {
                 top: 4700,
@@ -216,8 +204,6 @@ const def = {
 
     },
     sl5: {
-        top: 6100,
-        bottom: 9000,
         animation: [
             {
                 top: 6100,
@@ -270,7 +256,7 @@ const ScrollAnimation = () => {
     let enabled = new Map();
     let disabled = new Map();
 
-    function isAmong(num, top, bottom){
+    function isAmong(num, top, bottom) {
         return num >= top && num <= bottom
     };
 
@@ -292,11 +278,15 @@ const ScrollAnimation = () => {
         const scrollTop = window.scrollY || window.pageYOffset;
         const currentCenterPosition = scrollTop + window.innerHeight / 2;
 
+
         // disabled 순회하며 활성화할 요소 찾기.
         disabled.forEach((obj, refname) => {
+            const top = Math.min(...obj.animation.map(animation => animation.top));
+            const bottom = Math.max(...obj.animation.map(animation => animation.bottom));
+
             // 만약 칸에 있다면 해당 요소 활성화
             if (
-                isAmong(currentCenterPosition, obj.top, obj.bottom)
+                isAmong(currentCenterPosition, top, bottom)
             ) {
                 enabled.set(refname, obj);
 
@@ -307,7 +297,8 @@ const ScrollAnimation = () => {
         });
         // enabled 순회하면서 헤제할 요소를 체크
         enabled.forEach((obj, refname) => {
-            const {top, bottom} = obj;
+            const top = Math.min(...obj.animation.map(animation => animation.top));
+            const bottom = Math.max(...obj.animation.map(animation => animation.bottom));
 
             // 범위 밖에 있다면
             if (!isAmong(currentCenterPosition, top, bottom)) {
@@ -363,7 +354,6 @@ const ScrollAnimation = () => {
     }
 
 
-
     useEffect(() => {
         if (ref.current) {
             window.addEventListener('scroll', onScroll);
@@ -373,27 +363,6 @@ const ScrollAnimation = () => {
             for (const refname of Object.keys(def)) {
                 disabled.set(refname, def[refname]);
             }
-
-            // 각 애니메이션을 enabled == false 로 만듬.
-            // for (const refname of Object.keys(def)) {
-            //     for (const animation of def[refname].animation) {
-            //         animation.enabled = false;
-            //     }
-            // }
-
-            // disabled.forEach((obj, refname) => {
-            //     Object.keys(obj.topStyle).forEach((styleName) => {
-            //         const pushValue = obj.topStyle[styleName];
-            //         refs[refname].current.style[styleName] = pushValue;
-            //         console.log(
-            //             refname,
-            //             styleName,
-            //             refs[refname].current.style[styleName]
-            //         )
-            //     });
-            // });
-
-
 
             onScroll();
 
