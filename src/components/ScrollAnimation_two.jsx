@@ -1,92 +1,16 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef} from 'react';
 import styled from '@emotion/styled';
+import {useEffectOnce} from "./useEffectOnce";
 
 const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
 const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
 const midSlow = window.bezierEasing(0, 0.7, 1, 0.3);
 
+const targetHeight = 7100;
+
 const def = {
-    height: 7100,
-    elements: {
-        sl1: {
-            top: 500,
-            bottom: 1900,
-            topStyle: {
-                opacity: 0,
-                translateY: -60
-            },
-            bottomStyle: {
-                opacity: 0,
-                translateY: 60
-            }
-        },
-        scdown: {
-            top: 0,
-            bottom: 1000,
-            topStyle: {
-                opacity: 1
-            },
-            bottomStyle: {
-                opacity: 0
-            }
-        },
-        sl2: {
-            top: 1900,
-            bottom: 3200,
-            topStyle: {
-                opacity: 0,
-                translateY: -60
-            },
-            bottomStyle: {
-                opacity: 0,
-                translateY: 60
-            }
-        },
-        sl3: {
-            top: 3300,
-            bottom: 4600,
-            topStyle: {
-                opacity: 0
-            },
-            bottomStyle: {
-                opacity: 0
-            }
-        },
-        wave: {
-            top: 4500,
-            bottom: 5900,
-            topStyle: {
-                opacity: 0,
-                translateY: 300
-            },
-            bottomStyle: {
-                opacity: 0,
-                translateY: 0
-            }
-        },
-        sl4: {
-            top: 4700,
-            bottom: 6000,
-            topStyle: {
-                opacity: 0
-            },
-            bottomStyle: {
-                opacity: 0
-            }
-        },
-        sl5: {
-            top: 6100,
-            bottom: 9000,
-            topStyle: {
-                opacity: 0
-            },
-            bottomStyle: {
-                opacity: 0
-            }
-        }
-    },
-    animations: {
-        sl1: [
+    sl1: {
+        animation: [
             {
                 top: 500,
                 bottom: 1900,
@@ -121,7 +45,9 @@ const def = {
                 }
             }
         ],
-        scdown: [
+    },
+    scdown: {
+        animation: [
             {
                 top: 600,
                 bottom: 1000,
@@ -134,7 +60,9 @@ const def = {
                 }
             }
         ],
-        sl2: [
+    },
+    sl2: {
+        animation: [
             {
                 top: 1900,
                 bottom: 3200,
@@ -169,7 +97,9 @@ const def = {
                 }
             }
         ],
-        sl3: [
+    },
+    sl3: {
+        animation: [
             {
                 top: 3300,
                 bottom: 4600,
@@ -204,7 +134,9 @@ const def = {
                 }
             }
         ],
-        wave: [
+    },
+    wave: {
+        animation: [
             {
                 top: 4500,
                 bottom: 5300,
@@ -232,7 +164,10 @@ const def = {
                 }
             }
         ],
-        sl4: [
+
+    },
+    sl4: {
+        animation: [
             {
                 top: 4700,
                 bottom: 6000,
@@ -267,7 +202,10 @@ const def = {
                 }
             }
         ],
-        sl5: [
+
+    },
+    sl5: {
+        animation: [
             {
                 top: 6100,
                 bottom: 7100,
@@ -319,11 +257,11 @@ const ScrollAnimation = () => {
     let enabled = new Map();
     let disabled = new Map();
 
-    function isAmong(num, top, bottom){
+    function isAmong(num, top, bottom) {
         return num >= top && num <= bottom
     };
 
-    function applyStyle(element, styleName, value, unit = "px") {
+    function applyStyle(element, styleName, value, unit) {
         if (styleName === "translateY") {
             element.style.transform = `translateY(${value}${unit})`;
             return;
@@ -333,18 +271,23 @@ const ScrollAnimation = () => {
             return;
         }
         element.style[styleName] = value;
+
     };
 
     function onScroll() {
         // 현재 스크롤 위치 파악
         const scrollTop = window.scrollY || window.pageYOffset;
-        const currentPos = scrollTop + window.innerHeight / 2;
+        const currentCenterPosition = scrollTop + window.innerHeight / 2;
+
 
         // disabled 순회하며 활성화할 요소 찾기.
         disabled.forEach((obj, refname) => {
+            const top = Math.min(...obj.animation.map(animation => animation.top));
+            const bottom = Math.max(...obj.animation.map(animation => animation.bottom));
+
             // 만약 칸에 있다면 해당 요소 활성화
             if (
-                isAmong(currentPos, obj.top, obj.bottom)
+                isAmong(currentCenterPosition, top, bottom)
             ) {
                 enabled.set(refname, obj);
 
@@ -353,31 +296,13 @@ const ScrollAnimation = () => {
                 disabled.delete(refname);
             }
         });
-
         // enabled 순회하면서 헤제할 요소를 체크
         enabled.forEach((obj, refname) => {
-            const {top, bottom, topStyle, bottomStyle} = obj;
+            const top = Math.min(...obj.animation.map(animation => animation.top));
+            const bottom = Math.max(...obj.animation.map(animation => animation.bottom));
+
             // 범위 밖에 있다면
-            if (!isAmong(currentPos, top, bottom)) {
-                // 위로 나갔다면 시작하는 스타일 적용
-                if (currentPos <= top) {
-                    Object.keys(topStyle).forEach((styleName) => {
-                        applyStyle(refs[refname].current, styleName, topStyle[styleName]);
-                    });
-                }
-                // 아래로 나갔다면 끝나는 스타일적용
-                else if (currentPos >= bottom) {
-                    Object.keys(bottomStyle).forEach((styleName) => {
-                        applyStyle(
-                            refs[refname].current,
-                            styleName,
-                            bottomStyle[styleName]
-                        );
-
-                        refs[refname].current.style[styleName] = bottomStyle[styleName];
-                    });
-                }
-
+            if (!isAmong(currentCenterPosition, top, bottom)) {
                 // 리스트에서 삭제하고 disabled로 옮김.
                 disabled.set(refname, obj);
 
@@ -388,38 +313,39 @@ const ScrollAnimation = () => {
 
             // enable 순회중, 범위 내부에 제대로 있다면 각 애니메이션 적용시키기.
             else {
-                applyAllAnimation(currentPos, refname);
+                applyAllAnimation(currentCenterPosition, refname);
             }
         });
     }
 
-    function applyAllAnimation(currentPos, refname) {
-        const animations = def.animations[refname];
+    function applyAllAnimation(currentCenterPosition, refname) {
+        const animations = def[refname].animation;
         if (!animations) return;
         for (const animation of animations) {
             const {top: a_top, bottom: a_bottom, easing, styles} = animation;
-            const isIn = isAmong(currentPos, a_top, a_bottom);
+            console.log(a_top, a_bottom)
+            const isIn = isAmong(currentCenterPosition, a_top, a_bottom);
             // 만약 애니메이션이 새롭게 들어갈 때 혹은 나갈때 enabled 설정
             if (isIn) {
                 if (!animation.enabled) animation.enabled = true;
             } else if (!isIn && animation.enabled) {
-                if (currentPos <= a_top) {
-                    applyStyles(currentPos, refname, styles, 0);
-                } else if (currentPos >= a_bottom) {
-                    applyStyles(currentPos, refname, styles, 1);
+                if (currentCenterPosition <= a_top) {
+                    applyStyles(currentCenterPosition, refname, styles, 0);
+                } else if (currentCenterPosition >= a_bottom) {
+                    applyStyles(currentCenterPosition, refname, styles, 1);
                 }
                 animation.enabled = false;
             }
 
             // 애니메이션이 enabled 라면, 애니메이션 적용.
             if (animation.enabled) {
-                const r = easing((currentPos - a_top) / (a_bottom - a_top));
-                applyStyles(currentPos, refname, styles, r);
+                const r = easing((currentCenterPosition - a_top) / (a_bottom - a_top));
+                applyStyles(currentCenterPosition, refname, styles, r);
             }
         }
     }
 
-    function applyStyles(currentPos, refname, styles, r, unit = "px") {
+    function applyStyles(currentCenterPosition, refname, styles, r, unit = "px") {
         for (const style of Object.keys(styles)) {
             const {topValue, bottomValue} = styles[style];
             const calc = (bottomValue - topValue) * r + topValue;
@@ -429,37 +355,15 @@ const ScrollAnimation = () => {
     }
 
 
-
-    useEffect(() => {
+    useEffectOnce(() => {
         if (ref.current) {
-            console.log(sl1)
-
             window.addEventListener('scroll', onScroll);
             const target = ref.current;
-            target.style.height = `${def.height}px`;
+            target.style.height = `${targetHeight}px`;
 
-            disabled.clear();
-            enabled.clear();
-
-            for (const refname of Object.keys(def.elements)) {
-                disabled.set(refname, def.elements[refname]);
+            for (const refname of Object.keys(def)) {
+                disabled.set(refname, def[refname]);
             }
-
-            // 각 애니메이션을 enabled == false 로 만듬.
-            for (const refname of Object.keys(def.animations)) {
-                for (const animation of def.animations[refname]) {
-                    animation.enabled = false;
-                }
-            }
-
-            disabled.forEach((obj, refname) => {
-                Object.keys(obj.topStyle).forEach((styleName) => {
-                    const pushValue = obj.topStyle[styleName];
-                    refs[refname].current.style[styleName] = pushValue;
-                });
-            });
-
-
 
             onScroll();
 
@@ -467,7 +371,7 @@ const ScrollAnimation = () => {
                 window.removeEventListener('scroll', onScroll)
             }
         }
-    }, [ref]);
+    });
 
 
     return (

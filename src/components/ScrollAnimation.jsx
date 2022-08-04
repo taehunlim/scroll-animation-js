@@ -1,5 +1,6 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef} from 'react';
 import styled from '@emotion/styled';
+import {useEffectOnce} from "./useEffectOnce";
 
 const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
 const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
@@ -7,8 +8,8 @@ const midSlow = window.bezierEasing(0, 0.7, 1, 0.3);
 
 const targetHeight = 7100;
 
-const def = {
-    sl1: {
+const def = [
+    {
         animation: [
             {
                 top: 500,
@@ -45,7 +46,7 @@ const def = {
             }
         ],
     },
-    scdown: {
+    {
         animation: [
             {
                 top: 600,
@@ -60,7 +61,7 @@ const def = {
             }
         ],
     },
-    sl2: {
+    {
         animation: [
             {
                 top: 1900,
@@ -97,7 +98,7 @@ const def = {
             }
         ],
     },
-    sl3: {
+    {
         animation: [
             {
                 top: 3300,
@@ -134,7 +135,7 @@ const def = {
             }
         ],
     },
-    wave: {
+    {
         animation: [
             {
                 top: 4500,
@@ -165,7 +166,7 @@ const def = {
         ],
 
     },
-    sl4: {
+    {
         animation: [
             {
                 top: 4700,
@@ -203,7 +204,7 @@ const def = {
         ],
 
     },
-    sl5: {
+    {
         animation: [
             {
                 top: 6100,
@@ -229,7 +230,7 @@ const def = {
             }
         ]
     }
-};
+];
 
 
 const ScrollAnimation = () => {
@@ -243,15 +244,15 @@ const ScrollAnimation = () => {
     const sl4 = useRef(null);
     const sl5 = useRef(null);
 
-    const refs = {
+    const refs = [
         sl1,
+        scdown,
         sl2,
         sl3,
         sl4,
-        scdown,
         wave,
         sl5
-    }
+    ]
 
     let enabled = new Map();
     let disabled = new Map();
@@ -354,15 +355,13 @@ const ScrollAnimation = () => {
     }
 
 
-    useEffect(() => {
+    useEffectOnce(() => {
         if (ref.current) {
             window.addEventListener('scroll', onScroll);
             const target = ref.current;
             target.style.height = `${targetHeight}px`;
 
-            for (const refname of Object.keys(def)) {
-                disabled.set(refname, def[refname]);
-            }
+            def.map((def, i) => disabled.set(i, def));
 
             onScroll();
 
@@ -370,7 +369,7 @@ const ScrollAnimation = () => {
                 window.removeEventListener('scroll', onScroll)
             }
         }
-    }, [ref]);
+    });
 
 
     return (
