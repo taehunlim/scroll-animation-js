@@ -321,9 +321,8 @@ const ScrollAnimation = () => {
     function applyAllAnimation(currentCenterPosition, refname) {
         const animations = def[refname].animation;
         if (!animations) return;
-        for (const animation of animations) {
+        animations.map(animation => {
             const {top: a_top, bottom: a_bottom, easing, styles} = animation;
-            console.log(a_top, a_bottom)
             const isIn = isAmong(currentCenterPosition, a_top, a_bottom);
             // 만약 애니메이션이 새롭게 들어갈 때 혹은 나갈때 enabled 설정
             if (isIn) {
@@ -342,16 +341,16 @@ const ScrollAnimation = () => {
                 const r = easing((currentCenterPosition - a_top) / (a_bottom - a_top));
                 applyStyles(currentCenterPosition, refname, styles, r);
             }
-        }
+        })
     }
 
     function applyStyles(currentCenterPosition, refname, styles, r, unit = "px") {
-        for (const style of Object.keys(styles)) {
+        Object.keys(styles).map(style => {
             const {topValue, bottomValue} = styles[style];
             const calc = (bottomValue - topValue) * r + topValue;
 
             applyStyle(refs[refname].current, style, calc, unit);
-        }
+        })
     }
 
 
@@ -361,7 +360,7 @@ const ScrollAnimation = () => {
             const target = ref.current;
             target.style.height = `${targetHeight}px`;
 
-            def.map((def, i) => disabled.set(i, def));
+            def.map((def, index) => disabled.set(index, def));
 
             onScroll();
 
