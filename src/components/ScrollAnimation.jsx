@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import styled from '@emotion/styled';
 import {useEffectOnce} from "./useEffectOnce";
 
@@ -235,24 +235,11 @@ const def = [
 
 const ScrollAnimation = () => {
     const ref = useRef(null);
-    const sl1 = useRef(null)
-    const scdown = useRef(null);
-    const wave = useRef(null);
+    const slideContainerRef = useRef(null);
 
-    const sl2 = useRef(null);
-    const sl3 = useRef(null);
-    const sl4 = useRef(null);
-    const sl5 = useRef(null);
+    const [isRendered, setIsRendered] = useState(false);
 
-    const refs = [
-        sl1,
-        scdown,
-        sl2,
-        sl3,
-        sl4,
-        wave,
-        sl5
-    ]
+    const refs = slideContainerRef.current?.children;
 
     let enabled = new Map();
     let disabled = new Map();
@@ -290,9 +277,8 @@ const ScrollAnimation = () => {
                 isAmong(currentCenterPosition, top, bottom)
             ) {
                 enabled.set(refname, obj);
-
-                refs[refname].current.classList.remove("disabled");
-                refs[refname].current.classList.add("enabled");
+                refs[refname].classList.remove("disabled");
+                refs[refname].classList.add("enabled");
                 disabled.delete(refname);
             }
         });
@@ -306,8 +292,8 @@ const ScrollAnimation = () => {
                 // 리스트에서 삭제하고 disabled로 옮김.
                 disabled.set(refname, obj);
 
-                refs[refname].current.classList.remove("enabled");
-                refs[refname].current.classList.add("disabled");
+                refs[refname].classList.remove("enabled");
+                refs[refname].classList.add("disabled");
                 enabled.delete(refname);
             }
 
@@ -349,53 +335,64 @@ const ScrollAnimation = () => {
             const {topValue, bottomValue} = styles[style];
             const calc = (bottomValue - topValue) * r + topValue;
 
-            applyStyle(refs[refname].current, style, calc, unit);
+            applyStyle(refs[refname], style, calc, unit);
         })
     }
 
-
     useEffectOnce(() => {
-        if (ref.current) {
-            window.addEventListener('scroll', onScroll);
-            const target = ref.current;
-            target.style.height = `${targetHeight}px`;
-
-            def.map((def, index) => disabled.set(index, def));
-
-            onScroll();
-
-            return () => {
-                window.removeEventListener('scroll', onScroll)
-            }
+        if(slideContainerRef.current) {
+            setIsRendered(true);
         }
     });
+
+    useEffect(() => {
+        if(isRendered) {
+            if (ref.current) {
+                const target = ref.current;
+                target.style.height = `${targetHeight}px`;
+
+                const slideContainer = slideContainerRef.current;
+                if(slideContainer) {
+                    document.addEventListener('scroll', onScroll);
+
+                    def.map((def, index) => disabled.set(index, def));
+
+                    onScroll();
+
+                    return () => {
+                        document.removeEventListener('scroll', onScroll)
+                    }
+                }
+            }
+        }
+    }, [isRendered]);
 
 
     return (
         <Container ref={ref}>
             <Sticky>
-                <SlideContainer>
-                    <Slide ref={sl1}>
+                <SlideContainer ref={slideContainerRef}>
+                    <Slide>
                         <p>안녕하세요.</p>
                     </Slide>
-                    <Slide className="scdown" ref={scdown}>
+                    <Slide className="scdown">
                         아래로 스크롤하세요.
                     </Slide>
-                    <Slide ref={sl2}>
+                    <Slide>
                         <p>반갑습니다.</p>
                     </Slide>
-                    <Slide ref={sl3}>
+                    <Slide>
                         <p>세번째</p>
                         <p>슬라이드 입니다.</p>
                     </Slide>
-                    <Slide ref={sl4}>
+                    <Slide>
                         <p>네번째</p>
                         <p>슬라이드 입니다.</p>
                     </Slide>
-                    <Slide ref={wave}>
+                    <Slide>
                         따로 노는 배경
                     </Slide>
-                    <Slide ref={sl5}>
+                    <Slide>
                         <p>마지막</p>
                         <p>슬라이드 입니다.</p>
                     </Slide>
