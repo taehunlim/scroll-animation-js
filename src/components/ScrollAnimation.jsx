@@ -7,15 +7,15 @@ const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
 const midSlow = window.bezierEasing(0, 0.7, 1, 0.3);
 
 const th = window.innerHeight;
-const bh = th + 1400;
-const th2 = bh;
-const bh2 = th2 + 1400;
-const th3 = bh2;
-const bh3 = th3 + 1400;
-const th4 = bh3;
-const bh4 = th4 + 1400;
-const th5 = bh4;
-const bh5 = th5 + 1400;
+const bh = 2 * th;
+const th2 = 2 * th;
+const bh2 = 3 * th;
+const th3 = 3 * th;
+const bh3 = 4 * th;
+const th4 = 4 * th;
+const bh4 = 5 * th;
+const th5 = 5 * th;
+const bh5 = 6 * th;
 
 
 const independentTh =  (th4 + th5)/2;
@@ -261,9 +261,8 @@ const def = [
         ],
     },
 ];
-// const targetHeight = 7100;
+
 const targetHeight = window.innerHeight * (def.length+1);
-console.log(targetHeight)
 
 const ScrollAnimation = () => {
     const ref = useRef(null);
@@ -381,9 +380,10 @@ const ScrollAnimation = () => {
         if(isRendered) {
             if (ref.current) {
                 const target = ref.current;
-                target.style.height = `${targetHeight}px`;
-
                 const slideContainer = slideContainerRef.current;
+                const slideLength = slideContainer.children.length;
+                target.style.height = `${window.innerHeight * (slideLength +1)}px`;
+
                 if(slideContainer) {
                     document.addEventListener('scroll', onScroll);
 
