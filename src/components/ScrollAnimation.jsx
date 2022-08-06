@@ -6,14 +6,27 @@ const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
 const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
 const midSlow = window.bezierEasing(0, 0.7, 1, 0.3);
 
-const targetHeight = 7100;
+const th = window.innerHeight;
+const bh = th + 1400;
+const th2 = bh;
+const bh2 = th2 + 1400;
+const th3 = bh2;
+const bh3 = th3 + 1400;
+const th4 = bh3;
+const bh4 = th4 + 1400;
+const th5 = bh4;
+const bh5 = th5 + 1400;
+
+
+const independentTh =  (th4 + th5)/2;
+const independentBh =  (th4 + th5)/2 + 1400;
 
 const def = [
     {
         animation: [
             {
-                top: 500,
-                bottom: 1900,
+                top: th,
+                bottom: bh,
                 easing: midSlow,
                 styles: {
                     translateY: {
@@ -23,8 +36,8 @@ const def = [
                 }
             },
             {
-                top: 500,
-                bottom: 800,
+                top: th,
+                bottom: th + 300,
                 easing: ease,
                 styles: {
                     opacity: {
@@ -34,8 +47,8 @@ const def = [
                 }
             },
             {
-                top: 1400,
-                bottom: 1900,
+                top: bh - 300,
+                bottom: bh,
                 easing: easeIn,
                 styles: {
                     opacity: {
@@ -49,8 +62,8 @@ const def = [
     {
         animation: [
             {
-                top: 600,
-                bottom: 1000,
+                top: 0,
+                bottom: th,
                 easing: easeIn,
                 styles: {
                     opacity: {
@@ -64,8 +77,8 @@ const def = [
     {
         animation: [
             {
-                top: 1900,
-                bottom: 3200,
+                top: th2,
+                bottom: bh2,
                 easing: midSlow,
                 styles: {
                     translateY: {
@@ -75,8 +88,8 @@ const def = [
                 }
             },
             {
-                top: 1900,
-                bottom: 2500,
+                top: th2,
+                bottom: th2 + 300,
                 easing: ease,
                 styles: {
                     opacity: {
@@ -86,8 +99,8 @@ const def = [
                 }
             },
             {
-                top: 2600,
-                bottom: 3200,
+                top: bh2 - 300,
+                bottom: bh2,
                 easing: easeIn,
                 styles: {
                     opacity: {
@@ -101,8 +114,8 @@ const def = [
     {
         animation: [
             {
-                top: 3300,
-                bottom: 4600,
+                top: th3,
+                bottom: bh3,
                 easing: midSlow,
                 styles: {
                     translateY: {
@@ -112,8 +125,8 @@ const def = [
                 }
             },
             {
-                top: 3300,
-                bottom: 3900,
+                top: th3,
+                bottom: th3 + 300,
                 easing: ease,
                 styles: {
                     opacity: {
@@ -123,8 +136,8 @@ const def = [
                 }
             },
             {
-                top: 4000,
-                bottom: 4600,
+                top: bh3 - 300,
+                bottom: bh3,
                 easing: easeIn,
                 styles: {
                     opacity: {
@@ -138,14 +151,21 @@ const def = [
     {
         animation: [
             {
-                top: 4500,
-                bottom: 5300,
-                easing: ease,
+                top: th4,
+                bottom: bh4,
+                easing: midSlow,
                 styles: {
                     translateY: {
-                        topValue: 200,
-                        bottomValue: 0
-                    },
+                        topValue: 60,
+                        bottomValue: -60
+                    }
+                }
+            },
+            {
+                top: th4,
+                bottom: th4 + 300,
+                easing: ease,
+                styles: {
                     opacity: {
                         topValue: 0,
                         bottomValue: 1
@@ -153,8 +173,45 @@ const def = [
                 }
             },
             {
-                top: 5300,
-                bottom: 5900,
+                top: bh4 - 300,
+                bottom: bh4,
+                easing: easeIn,
+                styles: {
+                    opacity: {
+                        topValue: 1,
+                        bottomValue: 0
+                    }
+                }
+            }
+        ],
+    },
+    {
+        animation: [
+            {
+                top: independentTh,
+                bottom: independentBh,
+                easing: midSlow,
+                styles: {
+                    translateY: {
+                        topValue: 60,
+                        bottomValue: -60
+                    }
+                }
+            },
+            {
+                top: independentTh,
+                bottom: independentTh + 300,
+                easing: ease,
+                styles: {
+                    opacity: {
+                        topValue: 0,
+                        bottomValue: 1
+                    }
+                }
+            },
+            {
+                top: independentBh - 300,
+                bottom: independentBh,
                 easing: easeIn,
                 styles: {
                     opacity: {
@@ -169,8 +226,8 @@ const def = [
     {
         animation: [
             {
-                top: 4700,
-                bottom: 6000,
+                top: th5,
+                bottom: bh5,
                 easing: midSlow,
                 styles: {
                     translateY: {
@@ -180,8 +237,8 @@ const def = [
                 }
             },
             {
-                top: 4700,
-                bottom: 5300,
+                top: th5,
+                bottom: th5 + 300,
                 easing: ease,
                 styles: {
                     opacity: {
@@ -191,8 +248,8 @@ const def = [
                 }
             },
             {
-                top: 5400,
-                bottom: 6000,
+                top: bh5 - 300,
+                bottom: bh5,
                 easing: easeIn,
                 styles: {
                     opacity: {
@@ -202,36 +259,11 @@ const def = [
                 }
             }
         ],
-
     },
-    {
-        animation: [
-            {
-                top: 6100,
-                bottom: 7100,
-                easing: midSlow,
-                styles: {
-                    translateY: {
-                        topValue: 60,
-                        bottomValue: -60
-                    }
-                }
-            },
-            {
-                top: 6100,
-                bottom: 6700,
-                easing: ease,
-                styles: {
-                    opacity: {
-                        topValue: 0,
-                        bottomValue: 1
-                    }
-                }
-            }
-        ]
-    }
 ];
-
+// const targetHeight = 7100;
+const targetHeight = window.innerHeight * (def.length+1);
+console.log(targetHeight)
 
 const ScrollAnimation = () => {
     const ref = useRef(null);
