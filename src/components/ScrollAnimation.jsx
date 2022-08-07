@@ -11,7 +11,7 @@ const midSlow = window.bezierEasing(0, 0.7, 1, 0.3);
 
 const viewHeight = window.innerHeight;
 
-const ScrollAnimation = () => {
+const ScrollAnimation = ({children}) => {
     const ref = useRef(null);
     const slideContainerRef = useRef(null);
 
@@ -43,7 +43,6 @@ const ScrollAnimation = () => {
         // 현재 스크롤 위치 파악
         const scrollTop = window.scrollY || window.pageYOffset;
         const currentCenterPosition = scrollTop + viewHeight / 2;
-
 
         // disabled 순회하며 활성화할 요소 찾기.
         disabled.forEach((obj, slideIndex) => {
@@ -195,36 +194,14 @@ const ScrollAnimation = () => {
         <Container ref={ref}>
             <Sticky>
                 <SlideContainer ref={slideContainerRef}>
-                    <Slide className="scdown">
-                        아래로 스크롤하세요.
-                    </Slide>
-                    <Slide>
-                        <p>안녕하세요.</p>
-                    </Slide>
-                    <Slide>
-                        <p>반갑습니다.</p>
-                    </Slide>
-                    <Slide>
-                        <p>세번째</p>
-                        <p>슬라이드 입니다.</p>
-                    </Slide>
-                    <Slide>
-                        <p>네번째</p>
-                        <p>슬라이드 입니다.</p>
-                    </Slide>
-                    {/*<Slide classname="dependence">*/}
-                    {/*    따로 노는 배경*/}
-                    {/*</Slide>*/}
-                    <Slide>
-                        <p>마지막</p>
-                        <p>슬라이드 입니다.</p>
-                    </Slide>
-
+                    {children}
                 </SlideContainer>
             </Sticky>
         </Container>
     );
 };
+
+ScrollAnimation.Slide = Slide;
 
 export default ScrollAnimation;
 
