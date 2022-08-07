@@ -6,247 +6,6 @@ const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
 const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
 const midSlow = window.bezierEasing(0, 0.7, 1, 0.3);
 
-const th = window.innerHeight;
-const bh = 2 * th;
-const th2 = 2 * th;
-const bh2 = 3 * th;
-const th3 = 3 * th;
-const bh3 = 4 * th;
-const th4 = 4 * th;
-const bh4 = 5 * th;
-const th5 = 5 * th;
-const bh5 = 6 * th;
-
-
-const independentTh = (th4 + th5) / 2;
-const independentBh = (th4 + th5) / 2 + 1400;
-
-const def = [
-    [
-        {
-            top: 0,
-            bottom: th,
-            easing: easeIn,
-            styles: {
-                opacity: {
-                    topValue: 1,
-                    bottomValue: 0
-                }
-            }
-        }
-    ],
-    [
-        {
-            top: th,
-            bottom: bh,
-            easing: midSlow,
-            styles: {
-                translateY: {
-                    topValue: 60,
-                    bottomValue: -60
-                }
-            }
-        },
-        {
-            top: th,
-            bottom: th + th / 2,
-            easing: ease,
-            styles: {
-                opacity: {
-                    topValue: 0,
-                    bottomValue: 1
-                }
-            }
-        },
-        {
-            top: bh - th / 2,
-            bottom: bh,
-            easing: easeIn,
-            styles: {
-                opacity: {
-                    topValue: 1,
-                    bottomValue: 0
-                }
-            }
-        }
-    ],
-    [
-        {
-            top: th2,
-            bottom: bh2,
-            easing: midSlow,
-            styles: {
-                translateY: {
-                    topValue: 60,
-                    bottomValue: -60
-                }
-            }
-        },
-        {
-            top: th2,
-            bottom: th2 + th / 2,
-            easing: ease,
-            styles: {
-                opacity: {
-                    topValue: 0,
-                    bottomValue: 1
-                }
-            }
-        },
-        {
-            top: bh2 - th / 2,
-            bottom: bh2,
-            easing: easeIn,
-            styles: {
-                opacity: {
-                    topValue: 1,
-                    bottomValue: 0
-                }
-            }
-        }
-    ],
-    [
-        {
-            top: th3,
-            bottom: bh3,
-            easing: midSlow,
-            styles: {
-                translateY: {
-                    topValue: 60,
-                    bottomValue: -60
-                }
-            }
-        },
-        {
-            top: th3,
-            bottom: th3 + th / 2,
-            easing: ease,
-            styles: {
-                opacity: {
-                    topValue: 0,
-                    bottomValue: 1
-                }
-            }
-        },
-        {
-            top: bh3 - th / 2,
-            bottom: bh3,
-            easing: easeIn,
-            styles: {
-                opacity: {
-                    topValue: 1,
-                    bottomValue: 0
-                }
-            }
-        }
-    ],
-    [
-        {
-            top: th4,
-            bottom: bh4,
-            easing: midSlow,
-            styles: {
-                translateY: {
-                    topValue: 60,
-                    bottomValue: -60
-                }
-            }
-        },
-        {
-            top: th4,
-            bottom: th4 + th / 2,
-            easing: ease,
-            styles: {
-                opacity: {
-                    topValue: 0,
-                    bottomValue: 1
-                }
-            }
-        },
-        {
-            top: bh4 - th / 2,
-            bottom: bh4,
-            easing: easeIn,
-            styles: {
-                opacity: {
-                    topValue: 1,
-                    bottomValue: 0
-                }
-            }
-        }
-    ],
-    // [
-    //     {
-    //         top: independentTh,
-    //         bottom: independentBh,
-    //         easing: midSlow,
-    //         styles: {
-    //             translateY: {
-    //                 topValue: 60,
-    //                 bottomValue: -60
-    //             }
-    //         }
-    //     },
-    //     {
-    //         top: independentTh,
-    //         bottom: independentTh + th / 2,
-    //         easing: ease,
-    //         styles: {
-    //             opacity: {
-    //                 topValue: 0,
-    //                 bottomValue: 1
-    //             }
-    //         }
-    //     },
-    //     {
-    //         top: independentBh - th / 2,
-    //         bottom: independentBh,
-    //         easing: easeIn,
-    //         styles: {
-    //             opacity: {
-    //                 topValue: 1,
-    //                 bottomValue: 0
-    //             }
-    //         }
-    //     }
-    // ],
-    [
-        {
-            top: th5,
-            bottom: bh5,
-            easing: midSlow,
-            styles: {
-                translateY: {
-                    topValue: 60,
-                    bottomValue: -60
-                }
-            }
-        },
-        {
-            top: th5,
-            bottom: th5 + th / 2,
-            easing: ease,
-            styles: {
-                opacity: {
-                    topValue: 0,
-                    bottomValue: 1
-                }
-            }
-        },
-        {
-            top: bh5 - th / 2,
-            bottom: bh5,
-            easing: easeIn,
-            styles: {
-                opacity: {
-                    topValue: 1,
-                    bottomValue: 0
-                }
-            }
-        }
-    ],
-];
-
 const viewHeight = window.innerHeight;
 
 const ScrollAnimation = () => {
@@ -315,13 +74,12 @@ const ScrollAnimation = () => {
 
             // enable 순회중, 범위 내부에 제대로 있다면 각 애니메이션 적용시키기.
             else {
-                applyAllAnimation(currentCenterPosition, slideIndex);
+                applyAllAnimation(obj, slideIndex, currentCenterPosition);
             }
         });
     }
 
-    function applyAllAnimation(currentCenterPosition, slideIndex) {
-        const animations = def[slideIndex];
+    function applyAllAnimation(animations, slideIndex, currentCenterPosition) {
         if (!animations) return;
         animations.map((animation, i) => {
             const {top: a_top, bottom: a_bottom, easing, styles} = animation;
@@ -330,10 +88,14 @@ const ScrollAnimation = () => {
             // 만약 애니메이션이 새롭게 들어갈 때 혹은 나갈때 enabled 설정
             if (isIn) {
                 if (!animation.enabled) animation.enabled = true;
-            } else if (!isIn && animation.enabled) {
+            }
+
+            if (!isIn && animation.enabled) {
                 if (currentCenterPosition <= a_top) {
                     applyStyles(currentCenterPosition, slideIndex, styles, 0);
-                } else if (currentCenterPosition >= a_bottom) {
+                }
+
+                if (currentCenterPosition >= a_bottom) {
                     applyStyles(currentCenterPosition, slideIndex, styles, 1);
                 }
                 animation.enabled = false;
@@ -367,13 +129,53 @@ const ScrollAnimation = () => {
             if (ref.current) {
                 const target = ref.current;
                 const slideContainer = slideContainerRef.current;
-                const slideLength = slideContainer.children.length;
-                target.style.height = `${viewHeight * (slideLength + 1)}px`;
+                const slides = slideContainer.children;
+                const slidesLength = slides.length;
+                target.style.height = `${viewHeight * (slidesLength + 1)}px`;
 
                 if (slideContainer) {
                     document.addEventListener('scroll', onScroll);
 
-                    def.map((def, index) => disabled.set(index, def));
+                    Array.from(slides).map((_, index) => {
+                        const top = viewHeight * index;
+                        const bottom = viewHeight * (index + 1);
+                        const defaultAnimation = [
+                            {
+                                top: top,
+                                bottom: bottom,
+                                easing: midSlow,
+                                styles: {
+                                    translateY: {
+                                        topValue: 60,
+                                        bottomValue: -60
+                                    }
+                                }
+                            },
+                            {
+                                top: top,
+                                bottom: top + top / 2,
+                                easing: ease,
+                                styles: {
+                                    opacity: {
+                                        topValue: 0,
+                                        bottomValue: 1
+                                    }
+                                }
+                            },
+                            {
+                                top: bottom - top / 2,
+                                bottom: bottom,
+                                easing: easeIn,
+                                styles: {
+                                    opacity: {
+                                        topValue: 1,
+                                        bottomValue: 0
+                                    }
+                                }
+                            }
+                        ];
+                        return disabled.set(index, defaultAnimation);
+                    });
 
                     onScroll();
 
