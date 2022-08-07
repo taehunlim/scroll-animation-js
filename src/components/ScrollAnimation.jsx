@@ -284,44 +284,44 @@ const ScrollAnimation = () => {
 
 
         // disabled 순회하며 활성화할 요소 찾기.
-        disabled.forEach((obj, refname) => {
-            const top = viewHeight * refname;
-            const bottom = viewHeight * (refname + 1);
+        disabled.forEach((obj, slideIndex) => {
+            const top = viewHeight * slideIndex;
+            const bottom = viewHeight * (slideIndex + 1);
 
             // 만약 칸에 있다면 해당 요소 활성화
             if (
                 isAmong(currentCenterPosition, top, bottom)
             ) {
-                enabled.set(refname, obj);
-                refs[refname].classList.remove("disabled");
-                refs[refname].classList.add("enabled");
-                disabled.delete(refname);
+                enabled.set(slideIndex, obj);
+                refs[slideIndex].classList.remove("disabled");
+                refs[slideIndex].classList.add("enabled");
+                disabled.delete(slideIndex);
             }
         });
         // enabled 순회하면서 헤제할 요소를 체크
-        enabled.forEach((obj, refname) => {
-            const top = viewHeight * refname;
-            const bottom = viewHeight * (refname + 1);
+        enabled.forEach((obj, slideIndex) => {
+            const top = viewHeight * slideIndex;
+            const bottom = viewHeight * (slideIndex + 1);
 
             // 범위 밖에 있다면
             if (!isAmong(currentCenterPosition, top, bottom)) {
                 // 리스트에서 삭제하고 disabled로 옮김.
-                disabled.set(refname, obj);
+                disabled.set(slideIndex, obj);
 
-                refs[refname].classList.remove("enabled");
-                refs[refname].classList.add("disabled");
-                enabled.delete(refname);
+                refs[slideIndex].classList.remove("enabled");
+                refs[slideIndex].classList.add("disabled");
+                enabled.delete(slideIndex);
             }
 
             // enable 순회중, 범위 내부에 제대로 있다면 각 애니메이션 적용시키기.
             else {
-                applyAllAnimation(currentCenterPosition, refname);
+                applyAllAnimation(currentCenterPosition, slideIndex);
             }
         });
     }
 
-    function applyAllAnimation(currentCenterPosition, refname) {
-        const animations = def[refname];
+    function applyAllAnimation(currentCenterPosition, slideIndex) {
+        const animations = def[slideIndex];
         if (!animations) return;
         animations.map((animation, i) => {
             const {top: a_top, bottom: a_bottom, easing, styles} = animation;
@@ -332,9 +332,9 @@ const ScrollAnimation = () => {
                 if (!animation.enabled) animation.enabled = true;
             } else if (!isIn && animation.enabled) {
                 if (currentCenterPosition <= a_top) {
-                    applyStyles(currentCenterPosition, refname, styles, 0);
+                    applyStyles(currentCenterPosition, slideIndex, styles, 0);
                 } else if (currentCenterPosition >= a_bottom) {
-                    applyStyles(currentCenterPosition, refname, styles, 1);
+                    applyStyles(currentCenterPosition, slideIndex, styles, 1);
                 }
                 animation.enabled = false;
             }
@@ -342,17 +342,17 @@ const ScrollAnimation = () => {
             // 애니메이션이 enabled 라면, 애니메이션 적용.
             if (animation.enabled) {
                 const r = easing((currentCenterPosition - a_top) / (a_bottom - a_top));
-                applyStyles(currentCenterPosition, refname, styles, r);
+                applyStyles(currentCenterPosition, slideIndex, styles, r);
             }
         })
     }
 
-    function applyStyles(currentCenterPosition, refname, styles, r, unit = "px") {
+    function applyStyles(currentCenterPosition, slideIndex, styles, r, unit = "px") {
         Object.keys(styles).map(style => {
             const {topValue, bottomValue} = styles[style];
             const calc = (bottomValue - topValue) * r + topValue;
 
-            applyStyle(refs[refname], style, calc, unit);
+            applyStyle(refs[slideIndex], style, calc, unit);
         })
     }
 
