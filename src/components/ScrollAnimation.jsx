@@ -16,6 +16,8 @@ const ScrollAnimation = ({children}) => {
     const slideContainerRef = useRef(null);
 
     const [isRendered, setIsRendered] = useState(false);
+    const [disabled2, setDisabled] = useState([]);
+    const [enabled2, setEnabled] = useState([]);
 
     const refs = slideContainerRef.current?.children;
 
@@ -128,63 +130,62 @@ const ScrollAnimation = ({children}) => {
 
     useEffect(() => {
         if (isRendered) {
-            if (ref.current) {
-                const target = ref.current;
-                const slideContainer = slideContainerRef.current;
-                const slides = slideContainer.children;
-                const slidesLength = slides.length;
-                target.style.height = `${viewHeight * (slidesLength + 1)}px`;
+            const target = ref.current;
+            const slideContainer = slideContainerRef.current;
+            const slides = slideContainer.children;
+            const slidesLength = slides.length;
 
-                if (slideContainer) {
-                    document.addEventListener('scroll', onScroll);
+            target.style.height = `${viewHeight * (slidesLength + 1)}px`;
 
-                    Array.from(slides).map((_, index) => {
-                        const top = viewHeight * index;
-                        const bottom = viewHeight * (index + 1);
-                        const defaultAnimation = [
-                            {
-                                top: top,
-                                bottom: bottom,
-                                easing: midSlow,
-                                styles: {
-                                    translateY: {
-                                        topValue: 60,
-                                        bottomValue: -60
-                                    }
-                                }
-                            },
-                            {
-                                top: top,
-                                bottom: top + top / 2,
-                                easing: ease,
-                                styles: {
-                                    opacity: {
-                                        topValue: 0,
-                                        bottomValue: 1
-                                    }
-                                }
-                            },
-                            {
-                                top: bottom - top / 2,
-                                bottom: bottom,
-                                easing: easeIn,
-                                styles: {
-                                    opacity: {
-                                        topValue: 1,
-                                        bottomValue: 0
-                                    }
-                                }
+            document.addEventListener('scroll', onScroll);
+
+            const newArr = Array.from(slides).map((_, index) => {
+                const top = viewHeight * index;
+                const bottom = viewHeight * (index + 1);
+                const defaultAnimation = [
+                    {
+                        top: top,
+                        bottom: bottom,
+                        easing: midSlow,
+                        styles: {
+                            translateY: {
+                                topValue: 60,
+                                bottomValue: -60
                             }
-                        ];
-                        return disabled.set(index, defaultAnimation);
-                    });
-
-                    onScroll();
-
-                    return () => {
-                        document.removeEventListener('scroll', onScroll)
+                        }
+                    },
+                    {
+                        top: top,
+                        bottom: top + top / 2,
+                        easing: ease,
+                        styles: {
+                            opacity: {
+                                topValue: 0,
+                                bottomValue: 1
+                            }
+                        }
+                    },
+                    {
+                        top: bottom - top / 2,
+                        bottom: bottom,
+                        easing: easeIn,
+                        styles: {
+                            opacity: {
+                                topValue: 1,
+                                bottomValue: 0
+                            }
+                        }
                     }
-                }
+                ];
+                disabled.set(index, defaultAnimation);
+                return defaultAnimation
+            });
+            setDisabled(newArr);
+            
+            onScroll();
+
+            return () => {
+                document.removeEventListener('scroll', onScroll)
             }
         }
     }, [isRendered]);
