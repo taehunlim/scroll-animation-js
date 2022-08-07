@@ -18,251 +18,236 @@ const th5 = 5 * th;
 const bh5 = 6 * th;
 
 
-const independentTh =  (th4 + th5)/2;
-const independentBh =  (th4 + th5)/2 + 1400;
+const independentTh = (th4 + th5) / 2;
+const independentBh = (th4 + th5) / 2 + 1400;
 
 const def = [
-    {
-        animation: [
-            {
-                top: th,
-                bottom: bh,
-                easing: midSlow,
-                styles: {
-                    translateY: {
-                        topValue: 60,
-                        bottomValue: -60
-                    }
-                }
-            },
-            {
-                top: th,
-                bottom: th + 300,
-                easing: ease,
-                styles: {
-                    opacity: {
-                        topValue: 0,
-                        bottomValue: 1
-                    }
-                }
-            },
-            {
-                top: bh - 300,
-                bottom: bh,
-                easing: easeIn,
-                styles: {
-                    opacity: {
-                        topValue: 1,
-                        bottomValue: 0
-                    }
+    [
+        {
+            top: 0,
+            bottom: th,
+            easing: easeIn,
+            styles: {
+                opacity: {
+                    topValue: 1,
+                    bottomValue: 0
                 }
             }
-        ],
-    },
-    {
-        animation: [
-            {
-                top: 0,
-                bottom: th,
-                easing: easeIn,
-                styles: {
-                    opacity: {
-                        topValue: 1,
-                        bottomValue: 0
-                    }
+        }
+    ],
+    [
+        {
+            top: th,
+            bottom: bh,
+            easing: midSlow,
+            styles: {
+                translateY: {
+                    topValue: 60,
+                    bottomValue: -60
                 }
             }
-        ],
-    },
-    {
-        animation: [
-            {
-                top: th2,
-                bottom: bh2,
-                easing: midSlow,
-                styles: {
-                    translateY: {
-                        topValue: 60,
-                        bottomValue: -60
-                    }
-                }
-            },
-            {
-                top: th2,
-                bottom: th2 + 300,
-                easing: ease,
-                styles: {
-                    opacity: {
-                        topValue: 0,
-                        bottomValue: 1
-                    }
-                }
-            },
-            {
-                top: bh2 - 300,
-                bottom: bh2,
-                easing: easeIn,
-                styles: {
-                    opacity: {
-                        topValue: 1,
-                        bottomValue: 0
-                    }
+        },
+        {
+            top: th,
+            bottom: th + th / 2,
+            easing: ease,
+            styles: {
+                opacity: {
+                    topValue: 0,
+                    bottomValue: 1
                 }
             }
-        ],
-    },
-    {
-        animation: [
-            {
-                top: th3,
-                bottom: bh3,
-                easing: midSlow,
-                styles: {
-                    translateY: {
-                        topValue: 60,
-                        bottomValue: -60
-                    }
-                }
-            },
-            {
-                top: th3,
-                bottom: th3 + 300,
-                easing: ease,
-                styles: {
-                    opacity: {
-                        topValue: 0,
-                        bottomValue: 1
-                    }
-                }
-            },
-            {
-                top: bh3 - 300,
-                bottom: bh3,
-                easing: easeIn,
-                styles: {
-                    opacity: {
-                        topValue: 1,
-                        bottomValue: 0
-                    }
+        },
+        {
+            top: bh - th / 2,
+            bottom: bh,
+            easing: easeIn,
+            styles: {
+                opacity: {
+                    topValue: 1,
+                    bottomValue: 0
                 }
             }
-        ],
-    },
-    {
-        animation: [
-            {
-                top: th4,
-                bottom: bh4,
-                easing: midSlow,
-                styles: {
-                    translateY: {
-                        topValue: 60,
-                        bottomValue: -60
-                    }
-                }
-            },
-            {
-                top: th4,
-                bottom: th4 + 300,
-                easing: ease,
-                styles: {
-                    opacity: {
-                        topValue: 0,
-                        bottomValue: 1
-                    }
-                }
-            },
-            {
-                top: bh4 - 300,
-                bottom: bh4,
-                easing: easeIn,
-                styles: {
-                    opacity: {
-                        topValue: 1,
-                        bottomValue: 0
-                    }
+        }
+    ],
+    [
+        {
+            top: th2,
+            bottom: bh2,
+            easing: midSlow,
+            styles: {
+                translateY: {
+                    topValue: 60,
+                    bottomValue: -60
                 }
             }
-        ],
-    },
-    {
-        animation: [
-            {
-                top: independentTh,
-                bottom: independentBh,
-                easing: midSlow,
-                styles: {
-                    translateY: {
-                        topValue: 60,
-                        bottomValue: -60
-                    }
-                }
-            },
-            {
-                top: independentTh,
-                bottom: independentTh + 300,
-                easing: ease,
-                styles: {
-                    opacity: {
-                        topValue: 0,
-                        bottomValue: 1
-                    }
-                }
-            },
-            {
-                top: independentBh - 300,
-                bottom: independentBh,
-                easing: easeIn,
-                styles: {
-                    opacity: {
-                        topValue: 1,
-                        bottomValue: 0
-                    }
+        },
+        {
+            top: th2,
+            bottom: th2 + th / 2,
+            easing: ease,
+            styles: {
+                opacity: {
+                    topValue: 0,
+                    bottomValue: 1
                 }
             }
-        ],
-
-    },
-    {
-        animation: [
-            {
-                top: th5,
-                bottom: bh5,
-                easing: midSlow,
-                styles: {
-                    translateY: {
-                        topValue: 60,
-                        bottomValue: -60
-                    }
-                }
-            },
-            {
-                top: th5,
-                bottom: th5 + 300,
-                easing: ease,
-                styles: {
-                    opacity: {
-                        topValue: 0,
-                        bottomValue: 1
-                    }
-                }
-            },
-            {
-                top: bh5 - 300,
-                bottom: bh5,
-                easing: easeIn,
-                styles: {
-                    opacity: {
-                        topValue: 1,
-                        bottomValue: 0
-                    }
+        },
+        {
+            top: bh2 - th / 2,
+            bottom: bh2,
+            easing: easeIn,
+            styles: {
+                opacity: {
+                    topValue: 1,
+                    bottomValue: 0
                 }
             }
-        ],
-    },
+        }
+    ],
+    [
+        {
+            top: th3,
+            bottom: bh3,
+            easing: midSlow,
+            styles: {
+                translateY: {
+                    topValue: 60,
+                    bottomValue: -60
+                }
+            }
+        },
+        {
+            top: th3,
+            bottom: th3 + th / 2,
+            easing: ease,
+            styles: {
+                opacity: {
+                    topValue: 0,
+                    bottomValue: 1
+                }
+            }
+        },
+        {
+            top: bh3 - th / 2,
+            bottom: bh3,
+            easing: easeIn,
+            styles: {
+                opacity: {
+                    topValue: 1,
+                    bottomValue: 0
+                }
+            }
+        }
+    ],
+    [
+        {
+            top: th4,
+            bottom: bh4,
+            easing: midSlow,
+            styles: {
+                translateY: {
+                    topValue: 60,
+                    bottomValue: -60
+                }
+            }
+        },
+        {
+            top: th4,
+            bottom: th4 + th / 2,
+            easing: ease,
+            styles: {
+                opacity: {
+                    topValue: 0,
+                    bottomValue: 1
+                }
+            }
+        },
+        {
+            top: bh4 - th / 2,
+            bottom: bh4,
+            easing: easeIn,
+            styles: {
+                opacity: {
+                    topValue: 1,
+                    bottomValue: 0
+                }
+            }
+        }
+    ],
+    // [
+    //     {
+    //         top: independentTh,
+    //         bottom: independentBh,
+    //         easing: midSlow,
+    //         styles: {
+    //             translateY: {
+    //                 topValue: 60,
+    //                 bottomValue: -60
+    //             }
+    //         }
+    //     },
+    //     {
+    //         top: independentTh,
+    //         bottom: independentTh + th / 2,
+    //         easing: ease,
+    //         styles: {
+    //             opacity: {
+    //                 topValue: 0,
+    //                 bottomValue: 1
+    //             }
+    //         }
+    //     },
+    //     {
+    //         top: independentBh - th / 2,
+    //         bottom: independentBh,
+    //         easing: easeIn,
+    //         styles: {
+    //             opacity: {
+    //                 topValue: 1,
+    //                 bottomValue: 0
+    //             }
+    //         }
+    //     }
+    // ],
+    [
+        {
+            top: th5,
+            bottom: bh5,
+            easing: midSlow,
+            styles: {
+                translateY: {
+                    topValue: 60,
+                    bottomValue: -60
+                }
+            }
+        },
+        {
+            top: th5,
+            bottom: th5 + th / 2,
+            easing: ease,
+            styles: {
+                opacity: {
+                    topValue: 0,
+                    bottomValue: 1
+                }
+            }
+        },
+        {
+            top: bh5 - th / 2,
+            bottom: bh5,
+            easing: easeIn,
+            styles: {
+                opacity: {
+                    topValue: 1,
+                    bottomValue: 0
+                }
+            }
+        }
+    ],
 ];
 
-const targetHeight = window.innerHeight * (def.length+1);
+const viewHeight = window.innerHeight;
 
 const ScrollAnimation = () => {
     const ref = useRef(null);
@@ -295,13 +280,13 @@ const ScrollAnimation = () => {
     function onScroll() {
         // 현재 스크롤 위치 파악
         const scrollTop = window.scrollY || window.pageYOffset;
-        const currentCenterPosition = scrollTop + window.innerHeight / 2;
+        const currentCenterPosition = scrollTop + viewHeight / 2;
 
 
         // disabled 순회하며 활성화할 요소 찾기.
         disabled.forEach((obj, refname) => {
-            const top = Math.min(...obj.animation.map(animation => animation.top));
-            const bottom = Math.max(...obj.animation.map(animation => animation.bottom));
+            const top = viewHeight * refname;
+            const bottom = viewHeight * (refname + 1);
 
             // 만약 칸에 있다면 해당 요소 활성화
             if (
@@ -315,8 +300,8 @@ const ScrollAnimation = () => {
         });
         // enabled 순회하면서 헤제할 요소를 체크
         enabled.forEach((obj, refname) => {
-            const top = Math.min(...obj.animation.map(animation => animation.top));
-            const bottom = Math.max(...obj.animation.map(animation => animation.bottom));
+            const top = viewHeight * refname;
+            const bottom = viewHeight * (refname + 1);
 
             // 범위 밖에 있다면
             if (!isAmong(currentCenterPosition, top, bottom)) {
@@ -336,10 +321,11 @@ const ScrollAnimation = () => {
     }
 
     function applyAllAnimation(currentCenterPosition, refname) {
-        const animations = def[refname].animation;
+        const animations = def[refname];
         if (!animations) return;
-        animations.map(animation => {
+        animations.map((animation, i) => {
             const {top: a_top, bottom: a_bottom, easing, styles} = animation;
+
             const isIn = isAmong(currentCenterPosition, a_top, a_bottom);
             // 만약 애니메이션이 새롭게 들어갈 때 혹은 나갈때 enabled 설정
             if (isIn) {
@@ -371,20 +357,20 @@ const ScrollAnimation = () => {
     }
 
     useEffectOnce(() => {
-        if(slideContainerRef.current) {
+        if (slideContainerRef.current) {
             setIsRendered(true);
         }
     });
 
     useEffect(() => {
-        if(isRendered) {
+        if (isRendered) {
             if (ref.current) {
                 const target = ref.current;
                 const slideContainer = slideContainerRef.current;
                 const slideLength = slideContainer.children.length;
-                target.style.height = `${window.innerHeight * (slideLength +1)}px`;
+                target.style.height = `${viewHeight * (slideLength + 1)}px`;
 
-                if(slideContainer) {
+                if (slideContainer) {
                     document.addEventListener('scroll', onScroll);
 
                     def.map((def, index) => disabled.set(index, def));
@@ -404,11 +390,11 @@ const ScrollAnimation = () => {
         <Container ref={ref}>
             <Sticky>
                 <SlideContainer ref={slideContainerRef}>
-                    <Slide>
-                        <p>안녕하세요.</p>
-                    </Slide>
                     <Slide className="scdown">
                         아래로 스크롤하세요.
+                    </Slide>
+                    <Slide>
+                        <p>안녕하세요.</p>
                     </Slide>
                     <Slide>
                         <p>반갑습니다.</p>
@@ -421,9 +407,9 @@ const ScrollAnimation = () => {
                         <p>네번째</p>
                         <p>슬라이드 입니다.</p>
                     </Slide>
-                    <Slide>
-                        따로 노는 배경
-                    </Slide>
+                    {/*<Slide classname="dependence">*/}
+                    {/*    따로 노는 배경*/}
+                    {/*</Slide>*/}
                     <Slide>
                         <p>마지막</p>
                         <p>슬라이드 입니다.</p>
