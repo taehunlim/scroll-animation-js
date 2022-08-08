@@ -14,12 +14,10 @@ const viewHeight = window.innerHeight;
 const ScrollAnimation = ({children}) => {
     const ref = useRef(null);
     const slideContainerRef = useRef(null);
+    const refs = slideContainerRef.current?.children;
 
     const [isRendered, setIsRendered] = useState(false);
-    const [disabled2, setDisabled] = useState([]);
-    const [enabled2, setEnabled] = useState([]);
 
-    const refs = slideContainerRef.current?.children;
 
     let enabled = new Map();
     let disabled = new Map();
@@ -78,12 +76,12 @@ const ScrollAnimation = ({children}) => {
 
             // enable 순회중, 범위 내부에 제대로 있다면 각 애니메이션 적용시키기.
             else {
-                applyAllAnimation(obj, slideIndex, currentCenterPosition);
+                applyAllAnimation(refs[slideIndex], obj, currentCenterPosition);
             }
         });
     }
 
-    function applyAllAnimation(animations, slideIndex, currentCenterPosition) {
+    function applyAllAnimation(target, animations, currentCenterPosition) {
         if (!animations) return;
         animations.map((animation, i) => {
             const {top: a_top, bottom: a_bottom, easing, styles} = animation;
@@ -96,11 +94,11 @@ const ScrollAnimation = ({children}) => {
 
             if (!isIn && animation.enabled) {
                 if (currentCenterPosition <= a_top) {
-                    applyStyles(currentCenterPosition, slideIndex, styles, 0);
+                    applyStyles(target, styles, currentCenterPosition, 0);
                 }
 
                 if (currentCenterPosition >= a_bottom) {
-                    applyStyles(currentCenterPosition, slideIndex, styles, 1);
+                    applyStyles(target, styles, currentCenterPosition, 1);
                 }
                 animation.enabled = false;
             }
@@ -108,17 +106,17 @@ const ScrollAnimation = ({children}) => {
             // 애니메이션이 enabled 라면, 애니메이션 적용.
             if (animation.enabled) {
                 const r = easing((currentCenterPosition - a_top) / (a_bottom - a_top));
-                applyStyles(currentCenterPosition, slideIndex, styles, r);
+                applyStyles(target, styles, currentCenterPosition, r);
             }
         })
     }
 
-    function applyStyles(currentCenterPosition, slideIndex, styles, r, unit = "px") {
+    function applyStyles(target, styles, currentCenterPosition, r, unit = "px") {
         Object.keys(styles).map(style => {
             const {topValue, bottomValue} = styles[style];
             const calc = (bottomValue - topValue) * r + topValue;
 
-            applyStyle(refs[slideIndex], style, calc, unit);
+            applyStyle(target, style, calc, unit);
         })
     }
 
@@ -139,7 +137,7 @@ const ScrollAnimation = ({children}) => {
 
             document.addEventListener('scroll', onScroll);
 
-            const newArr = Array.from(slides).map((_, index) => {
+            Array.from(slides).map((_, index) => {
                 const top = viewHeight * index;
                 const bottom = viewHeight * (index + 1);
                 const defaultAnimation = [
@@ -178,10 +176,8 @@ const ScrollAnimation = ({children}) => {
                     }
                 ];
                 disabled.set(index, defaultAnimation);
-                return defaultAnimation
             });
-            setDisabled(newArr);
-            
+
             onScroll();
 
             return () => {
