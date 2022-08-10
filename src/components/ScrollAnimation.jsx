@@ -14,7 +14,6 @@ const viewHeight = window.innerHeight;
 const ScrollAnimation = ({children}) => {
     const ref = useRef(null);
     const slideContainerRef = useRef(null);
-    const refs = slideContainerRef.current?.children;
 
     const [isRendered, setIsRendered] = useState(false);
 
@@ -39,7 +38,7 @@ const ScrollAnimation = ({children}) => {
 
     };
 
-    function onScroll() {
+    function onScroll(slides) {
         // 현재 스크롤 위치 파악
         const scrollTop = window.scrollY || window.pageYOffset;
         const currentCenterPosition = scrollTop + viewHeight / 2;
@@ -54,8 +53,7 @@ const ScrollAnimation = ({children}) => {
                 isAmong(currentCenterPosition, top, bottom)
             ) {
                 enabled.set(slideIndex, obj);
-                refs[slideIndex].classList.remove("disabled");
-                refs[slideIndex].classList.add("enabled");
+                slides[slideIndex].classList.add("enabled");
                 disabled.delete(slideIndex);
             }
         });
@@ -69,14 +67,13 @@ const ScrollAnimation = ({children}) => {
                 // 리스트에서 삭제하고 disabled로 옮김.
                 disabled.set(slideIndex, obj);
 
-                refs[slideIndex].classList.remove("enabled");
-                refs[slideIndex].classList.add("disabled");
+                slides[slideIndex].classList.remove("enabled");
                 enabled.delete(slideIndex);
             }
 
             // enable 순회중, 범위 내부에 제대로 있다면 각 애니메이션 적용시키기.
             else {
-                applyAllAnimation(refs[slideIndex], obj, currentCenterPosition);
+                applyAllAnimation(slides[slideIndex], obj, currentCenterPosition);
             }
         });
     }
@@ -135,7 +132,7 @@ const ScrollAnimation = ({children}) => {
 
             target.style.height = `${viewHeight * (slidesLength + 1)}px`;
 
-            document.addEventListener('scroll', onScroll);
+            document.addEventListener('scroll', () => onScroll(slides));
 
             Array.from(slides).map((_, index) => {
                 const top = viewHeight * index;
@@ -177,8 +174,6 @@ const ScrollAnimation = ({children}) => {
                 ];
                 disabled.set(index, defaultAnimation);
             });
-
-            onScroll();
 
             return () => {
                 document.removeEventListener('scroll', onScroll)
