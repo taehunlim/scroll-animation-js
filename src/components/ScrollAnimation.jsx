@@ -18,12 +18,12 @@ const ScrollAnimation = ({children}) => {
     const [isRendered, setIsRendered] = useState(false);
 
 
-    let enabled = new Map();
-    let disabled = new Map();
+    const enabled = new Map();
+    const disabled = new Map();
 
     function isAmong(num, top, bottom) {
         return num >= top && num <= bottom
-    };
+    }
 
     function applyStyle(element, styleName, value, unit) {
         if (styleName === "translateY") {
@@ -34,9 +34,8 @@ const ScrollAnimation = ({children}) => {
             element.style.transform = `translateX(${value}${unit})`;
             return;
         }
-        element.style[styleName] = value;
-
-    };
+        return element.style[styleName] = value;
+    }
 
     function onScroll(slides) {
         // 현재 스크롤 위치 파악
@@ -133,9 +132,7 @@ const ScrollAnimation = ({children}) => {
 
             target.style.height = `${viewHeight * (slidesLength + 1)}px`;
 
-            document.addEventListener('scroll', () => onScroll(slides));
-
-            Array.from(slides).map((_, index) => {
+            for(const index of Array.from(slides).keys()) {
                 const top = viewHeight * index;
                 const bottom = viewHeight * (index + 1);
                 const defaultAnimation = [
@@ -179,8 +176,10 @@ const ScrollAnimation = ({children}) => {
                     slides[index].classList.add("enabled");
                 }
                 disabled.set(index, defaultAnimation);
-            });
+            }
 
+            document.addEventListener('scroll', () => onScroll(slides));
+            
             return () => {
                 document.removeEventListener('scroll', () => onScroll(slides))
             }
