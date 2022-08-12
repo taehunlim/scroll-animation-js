@@ -57,6 +57,7 @@ const ScrollAnimation = ({children}) => {
                 disabled.delete(slideIndex);
             }
         });
+
         // enabled 순회하면서 헤제할 요소를 체크
         enabled.forEach((obj, slideIndex) => {
             const top = viewHeight * slideIndex;
@@ -172,11 +173,16 @@ const ScrollAnimation = ({children}) => {
                         }
                     }
                 ];
+
+                if(index === 0) {
+                    enabled.set(index, defaultAnimation);
+                    slides[index].classList.add("enabled");
+                }
                 disabled.set(index, defaultAnimation);
             });
 
             return () => {
-                document.removeEventListener('scroll', onScroll)
+                document.removeEventListener('scroll', () => onScroll(slides))
             }
         }
     }, [isRendered]);
