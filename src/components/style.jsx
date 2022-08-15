@@ -20,7 +20,7 @@ const SlideContainer = styled.div`
   height: 100%;
 `;
 
-const Slide = styled.div`
+const StyledSlide = styled.div`
   position: absolute;
   z-index: 0;
 
@@ -55,7 +55,7 @@ const styledComponent = {
     Container,
     Sticky,
     SlideContainer,
-    Slide
+    StyledSlide
 }
 
 export default styledComponent;

@@ -3,7 +3,7 @@ import {useEffectOnce} from "./useEffectOnce";
 
 import styledComponent from "./style";
 
-const { Container, Sticky, SlideContainer, Slide } = styledComponent;
+const { Container, Sticky, SlideContainer, StyledSlide } = styledComponent;
 
 const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
 const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
@@ -16,7 +16,6 @@ const ScrollAnimation = ({children}) => {
     const slideContainerRef = useRef(null);
 
     const [isRendered, setIsRendered] = useState(false);
-
 
     const enabled = new Map();
     const disabled = new Map();
@@ -132,7 +131,8 @@ const ScrollAnimation = ({children}) => {
 
             target.style.height = `${viewHeight * (slidesLength + 1)}px`;
 
-            for(const index of Array.from(slides).keys()) {
+
+            React.Children.map(children, (_child, index) => {
                 const top = viewHeight * index;
                 const bottom = viewHeight * (index + 1);
                 const defaultAnimation = [
@@ -171,15 +171,15 @@ const ScrollAnimation = ({children}) => {
                     }
                 ];
 
-                if(index === 0) {
+                if(top === 0) {
                     enabled.set(index, defaultAnimation);
                     slides[index].classList.add("enabled");
                 }
                 disabled.set(index, defaultAnimation);
-            }
-
-            document.addEventListener('scroll', () => onScroll(slides));
+            })
             
+            document.addEventListener('scroll', () => onScroll(slides));
+
             return () => {
                 document.removeEventListener('scroll', () => onScroll(slides))
             }
@@ -198,7 +198,7 @@ const ScrollAnimation = ({children}) => {
     );
 };
 
-ScrollAnimation.Slide = Slide;
+ScrollAnimation.Slide = StyledSlide;
 
 export default ScrollAnimation;
 
