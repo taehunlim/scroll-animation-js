@@ -1,13 +1,9 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {useEffectOnce} from "./useEffectOnce";
+import {defaultAnimation} from "./defaultAnimation";
 
 import styledComponent from "./style";
-
 const { Container, Sticky, SlideContainer, StyledSlide } = styledComponent;
-
-const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
-const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
-const midSlow = window.bezierEasing(0, 0.7, 1, 0.3);
 
 const viewHeight = window.innerHeight;
 
@@ -131,53 +127,21 @@ const ScrollAnimation = ({children}) => {
 
             target.style.height = `${viewHeight * (slidesLength + 1)}px`;
 
-
-            React.Children.map(children, (_child, index) => {
+            for(const index of Array.from(slides).keys()) {
                 const top = viewHeight * index;
                 const bottom = viewHeight * (index + 1);
-                const defaultAnimation = [
-                    {
-                        top: top,
-                        bottom: bottom,
-                        easing: midSlow,
-                        styles: {
-                            translateY: {
-                                topValue: 60,
-                                bottomValue: -60
-                            }
-                        }
-                    },
-                    {
-                        top: top,
-                        bottom: top + top / 2,
-                        easing: ease,
-                        styles: {
-                            opacity: {
-                                topValue: 0,
-                                bottomValue: 1
-                            }
-                        }
-                    },
-                    {
-                        top: bottom - top / 2,
-                        bottom: bottom,
-                        easing: easeIn,
-                        styles: {
-                            opacity: {
-                                topValue: 1,
-                                bottomValue: 0
-                            }
-                        }
-                    }
-                ];
 
-                if(top === 0) {
-                    enabled.set(index, defaultAnimation);
+                const animation = children[index].props.animation;
+
+                const currentAnimation = animation ? animation : defaultAnimation(top, bottom);
+
+                if(index === 0) {
+                    enabled.set(index, currentAnimation);
                     slides[index].classList.add("enabled");
                 }
-                disabled.set(index, defaultAnimation);
-            })
-            
+                disabled.set(index, currentAnimation);
+            }
+
             document.addEventListener('scroll', () => onScroll(slides));
 
             return () => {

@@ -1,6 +1,38 @@
 import React from 'react';
 import ScrollAnimation from "./components/ScrollAnimation";
 
+const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
+const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
+
+const animation = [
+    {
+        top: 4500,
+        bottom: 5300,
+        easing: ease,
+        styles: {
+            translateY: {
+                topValue: 200,
+                bottomValue: 0
+            },
+            opacity: {
+                topValue: 0,
+                bottomValue: 1
+            }
+        }
+    },
+    {
+        top: 5300,
+        bottom: 5900,
+        easing: easeIn,
+        styles: {
+            opacity: {
+                topValue: 1,
+                bottomValue: 0
+            }
+        }
+    }
+];
+
 const App = () => {
     const {Slide} = ScrollAnimation;
     return (
@@ -23,12 +55,12 @@ const App = () => {
                     <p>네번째</p>
                     <p>슬라이드 입니다.</p>
                 </Slide>
-                {/*<Slide classname="dependence">*/}
-                {/*    따로 노는 배경*/}
-                {/*</Slide>*/}
                 <Slide>
                     <p>마지막</p>
                     <p>슬라이드 입니다.</p>
+                </Slide>
+                <Slide animation={animation}>
+                    따로 노는 배경
                 </Slide>
 
             </ScrollAnimation>
