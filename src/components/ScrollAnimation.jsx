@@ -39,8 +39,8 @@ const ScrollAnimation = ({children}) => {
 
         // disabled 순회하며 활성화할 요소 찾기.
         disabled.forEach((obj, slideIndex) => {
-            const top = viewHeight * slideIndex;
-            const bottom = viewHeight * (slideIndex + 1);
+            const top = slideIndex === 6 ? 4500 : viewHeight * slideIndex;
+            const bottom = slideIndex === 6 ? 5900 : viewHeight * (slideIndex + 1);
 
             // 만약 칸에 있다면 해당 요소 활성화
             if (
@@ -54,8 +54,8 @@ const ScrollAnimation = ({children}) => {
 
         // enabled 순회하면서 헤제할 요소를 체크
         enabled.forEach((obj, slideIndex) => {
-            const top = viewHeight * slideIndex;
-            const bottom = viewHeight * (slideIndex + 1);
+            const top = slideIndex === 6 ? 4500 : viewHeight * slideIndex;
+            const bottom = slideIndex === 6 ? 5900 : viewHeight * (slideIndex + 1);
 
             // 범위 밖에 있다면
             if (!isAmong(currentCenterPosition, top, bottom)) {
@@ -128,13 +128,15 @@ const ScrollAnimation = ({children}) => {
             target.style.height = `${viewHeight * (slidesLength + 1)}px`;
 
             for(const index of Array.from(slides).keys()) {
-                const top = viewHeight * index;
-                const bottom = viewHeight * (index + 1);
-
                 const animation = children[index].props.animation;
+
+
+                const top = viewHeight * (index);
+                const bottom = viewHeight * (index + 1);
 
                 const currentAnimation = animation ? animation : defaultAnimation(top, bottom);
 
+                console.log(currentAnimation)
                 if(index === 0) {
                     enabled.set(index, currentAnimation);
                     slides[index].classList.add("enabled");

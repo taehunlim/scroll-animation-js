@@ -59,7 +59,10 @@ const App = () => {
                     <p>마지막</p>
                     <p>슬라이드 입니다.</p>
                 </Slide>
-                <Slide animation={animation}>
+                <Slide
+                    animationOrder={4.5}
+                    animation={animation}
+                >
                     따로 노는 배경
                 </Slide>
 
