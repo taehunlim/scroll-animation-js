@@ -39,11 +39,12 @@ const ScrollAnimation = ({children}) => {
 
         // disabled 순회하며 활성화할 요소 찾기.
         disabled.forEach((obj, slideIndex) => {
-            const {start, end} = obj;
+            // console.log(obj)
 
+            const isIn = obj.filter(f => isAmong(currentCenterPosition, f.start, f.end))[0];
             // 만약 칸에 있다면 해당 요소 활성화
             if (
-                isAmong(currentCenterPosition, start, end)
+                isIn
             ) {
                 enabled.set(slideIndex, obj);
                 slides[slideIndex].classList.add("enabled");
@@ -53,10 +54,10 @@ const ScrollAnimation = ({children}) => {
 
         // enabled 순회하면서 헤제할 요소를 체크
         enabled.forEach((obj, slideIndex) => {
-            const {start, end} = obj;
+            const isIn = obj.filter(f => isAmong(currentCenterPosition, f.start, f.end))[0];
 
             // 범위 밖에 있다면
-            if (!isAmong(currentCenterPosition, start, end)) {
+            if (!isIn) {
                 // 리스트에서 삭제하고 disabled로 옮김.
                 disabled.set(slideIndex, obj);
 
@@ -73,7 +74,7 @@ const ScrollAnimation = ({children}) => {
 
     function applyAllAnimation(target, animations, currentCenterPosition) {
         if (!animations) return;
-        animations.animation.map((animation, i) => {
+        animations.map((animation, i) => {
             const {start: a_start, end: a_end, easing, styles} = animation;
 
             const isIn = isAmong(currentCenterPosition, a_start, a_end);
@@ -128,12 +129,21 @@ const ScrollAnimation = ({children}) => {
             for(const index of Array.from(slides).keys()) {
                 const animation = children[index].props.animation;
 
+                const customAnimation = animation?.map(a => {
+                    const start = a.start * viewHeight;
+                    const end = a.end * viewHeight;
+                    return {
+                        ...a,
+                        start,
+                        end
+                    }
+                });
+
                 const start = viewHeight * (index);
                 const end = viewHeight * (index + 1);
 
-                const currentAnimation = animation ? animation : defaultAnimation(start, end);
+                const currentAnimation = customAnimation || defaultAnimation(start, end);
 
-                console.log(currentAnimation)
                 if(index === 0) {
                     enabled.set(index, currentAnimation);
                     slides[index].classList.add("enabled");
