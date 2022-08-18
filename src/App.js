@@ -4,34 +4,38 @@ import ScrollAnimation from "./components/ScrollAnimation";
 const ease = window.bezierEasing(0.25, 0.1, 0.25, 1.0);
 const easeIn = window.bezierEasing(0.38, 0.01, 0.78, 0.13);
 
-const animation = [
-    {
-        top: 4500,
-        bottom: 5300,
-        easing: ease,
-        styles: {
-            translateY: {
-                topValue: 200,
-                bottomValue: 0
-            },
-            opacity: {
-                topValue: 0,
-                bottomValue: 1
+const animation = {
+    start: 4500,
+    end: 5900,
+    animation: [
+        {
+            start: 4500,
+            end: 5300,
+            easing: ease,
+            styles: {
+                translateY: {
+                    startValue: 200,
+                    endValue: 0
+                },
+                opacity: {
+                    startValue: 0,
+                    endValue: 1
+                }
+            }
+        },
+        {
+            start: 5300,
+            end: 5900,
+            easing: easeIn,
+            styles: {
+                opacity: {
+                    startValue: 1,
+                    endValue: 0
+                }
             }
         }
-    },
-    {
-        top: 5300,
-        bottom: 5900,
-        easing: easeIn,
-        styles: {
-            opacity: {
-                topValue: 1,
-                bottomValue: 0
-            }
-        }
-    }
-];
+    ]
+}
 
 const App = () => {
     const {Slide} = ScrollAnimation;
