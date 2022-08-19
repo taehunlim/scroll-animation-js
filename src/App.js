@@ -60,7 +60,6 @@ const App = () => {
                     <p>슬라이드 입니다.</p>
                 </Slide>
                 <Slide
-                    animationOrder={4.5}
                     animation={animation}
                 >
                     따로 노는 배경
