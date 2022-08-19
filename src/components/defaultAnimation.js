@@ -13,10 +13,7 @@ export function defaultAnimation(start, end) {
                 end: end,
                 easing: midSlow,
                 styles: {
-                    translateY: {
-                        startValue: 60,
-                        endValue: -60
-                    }
+                    translateY: [60, -60]
                 }
             },
             {
@@ -24,10 +21,7 @@ export function defaultAnimation(start, end) {
                 end: (end + start) / 2,
                 easing: ease,
                 styles: {
-                    opacity: {
-                        startValue: 0,
-                        endValue: 1
-                    }
+                    opacity: [0, 1]
                 }
             },
             {
@@ -35,10 +29,7 @@ export function defaultAnimation(start, end) {
                 end: end,
                 easing: easeIn,
                 styles: {
-                    opacity: {
-                        startValue: 1,
-                        endValue: 0
-                    }
+                    opacity: [1, 0]
                 }
             }
         ]

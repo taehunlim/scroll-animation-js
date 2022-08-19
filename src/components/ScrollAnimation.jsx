@@ -103,7 +103,7 @@ const ScrollAnimation = ({children}) => {
 
     function applyStyles(target, styles, currentCenterPosition, r, unit = "px") {
         Object.keys(styles).map(style => {
-            const {startValue, endValue} = styles[style];
+            const [startValue, endValue] = styles[style];
             const calc = (endValue - startValue) * r + startValue;
 
             applyStyle(target, style, calc, unit);

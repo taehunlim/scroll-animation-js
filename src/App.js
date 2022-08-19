@@ -10,14 +10,8 @@ const animation = [
         end: 5.3,
         easing: ease,
         styles: {
-            translateY: {
-                startValue: 200,
-                endValue: 0
-            },
-            opacity: {
-                startValue: 0,
-                endValue: 1
-            }
+            translateY: [200, 0],
+            opacity: [0, 1]
         }
     },
     {
@@ -25,10 +19,7 @@ const animation = [
         end: 5.9,
         easing: easeIn,
         styles: {
-            opacity: {
-                startValue: 1,
-                endValue: 0
-            }
+            opacity: [1, 0]
         }
     }
 ];
