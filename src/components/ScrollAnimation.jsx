@@ -20,13 +20,13 @@ const ScrollAnimation = ({children}) => {
         return num >= start && num <= end
     }
 
-    function applyStyle(element, styleName, value, unit) {
+    function applyStyle(element, styleName, value) {
         if (styleName === "translateY") {
-            element.style.transform = `translateY(${value}${unit})`;
+            element.style.transform = `translateY(${value}%)`;
             return;
         }
         if (styleName === "translateX") {
-            element.style.transform = `translateX(${value}${unit})`;
+            element.style.transform = `translateX(${value}%)`;
             return;
         }
         return element.style[styleName] = value;
@@ -84,29 +84,29 @@ const ScrollAnimation = ({children}) => {
 
             if (!isIn && animation.enabled) {
                 if (currentCenterPosition <= a_start) {
-                    applyStyles(target, styles, currentCenterPosition, 0);
+                    applyStyles(target, styles, 0);
                 }
 
                 if (currentCenterPosition >= a_end) {
-                    applyStyles(target, styles, currentCenterPosition, 1);
+                    applyStyles(target, styles, 1);
                 }
                 animation.enabled = false;
             }
 
             // 애니메이션이 enabled 라면, 애니메이션 적용.
             if (animation.enabled) {
-                const r = easing((currentCenterPosition - a_start) / (a_end - a_start));
-                applyStyles(target, styles, currentCenterPosition, r);
+                const keyframe = easing((currentCenterPosition - a_start) / (a_end - a_start));
+                applyStyles(target, styles, keyframe);
             }
         })
     }
 
-    function applyStyles(target, styles, currentCenterPosition, r, unit = "px") {
+    function applyStyles(target, styles, keyframe) {
         Object.keys(styles).map(style => {
             const [startValue, endValue] = styles[style];
-            const calc = (endValue - startValue) * r + startValue;
+            const calc = (endValue - startValue) * keyframe + startValue;
 
-            applyStyle(target, style, calc, unit);
+            applyStyle(target, style, calc);
         })
     }
 
